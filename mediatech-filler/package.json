@@ -1,0 +1,15 @@
+{
+  "name": "mediatech-filler",
+  "version": "1.0.0",
+  "description": "ecoute un repertoire et renseigne une bdd",
+  "main": "index.js",
+  "author": "pjthin",
+  "license": "MIT",
+  "dependencies": {
+    "chokidar": "^3.4.3",
+    "events": "^3.2.0",
+    "exif": "^0.6.0",
+    "jimp": "^0.16.1",
+    "mongodb": "^3.6.3"
+  }
+}
