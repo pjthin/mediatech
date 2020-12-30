@@ -1,0 +1,8 @@
+{
+  "name": "mediatech-ihm",
+  "version": "1.0.0",
+  "description": "ihm for mediatech",
+  "main": "index.js",
+  "author": "pjthin",
+  "license": "MIT"
+}
