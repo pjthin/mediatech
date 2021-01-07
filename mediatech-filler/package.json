@@ -11,5 +11,9 @@
     "exif": "^0.6.0",
     "jimp": "^0.16.1",
     "mongodb": "^3.6.3"
+  },
+  "scripts": {
+    "run-dev": "node index.js env=dev",
+    "run-prd": "node index.js env=prd"
   }
 }
