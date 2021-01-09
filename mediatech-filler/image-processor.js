@@ -1,5 +1,6 @@
 const Jimp = require('jimp');
 const { ExifImage } = require('exif');
+const { log } = require('./util');
 const IMG_EXT = [
     '.bmp',
     '.gif',
@@ -14,9 +15,9 @@ class ImageProcessor {
     this.imageResizer = configuration.imageResizer;
   }
 
-  getExifImage(image) {
+  getExifImage(file) {
     return new Promise((resolve, reject) => {
-      new ExifImage(image.filepath, (error, exifData) => {
+      new ExifImage(file.filepath, (error, exifData) => {
         if (error) {
           reject(error);
         } else {
@@ -29,34 +30,45 @@ class ImageProcessor {
   extractOnly(exifData) {
     let { image, thumbnail, gps } = exifData;
     return {
-      image,
-      thumbnail,
-      gps
+      pictureMake: image["Make"] || thumbnail["Make"],
+      pictureModele: image["Model"] || thumbnail["Model"],
+      pictureDate: image["ModifyDate"] || thumbnail["ModifyDate"],
+      gpsLatitude: this.convertDMSToDD(gps["GPSLatitude"][0],gps["GPSLatitude"][1],gps["GPSLatitude"][2],gps["GPSLatitudeRef"]),
+      gpsLongitude: this.convertDMSToDD(gps["GPSLongitude"][0],gps["GPSLongitude"][1],gps["GPSLongitude"][2],gps["GPSLongitudeRef"]),
+      gpsAltitude: gps["GPSAltitude"],
+      gpsAltitudeRef: gps["GPSAltitudeRef"],
+      gpsSpeed: gps["GPSSpeed"],
+      gpsSpeedRef:gps["GPSSpeedRef"] 
     };
   }
 
-  canProcess(file) {
-    return IMG_EXT.includes(ext.toLowerCase());
+  convertDMSToDD(degrees, minutes, seconds, direction) {
+    let dd = degrees + minutes/60 + seconds/(60*60);
+    if (direction == "S" || direction == "W") {
+      dd = dd * -1;
+    } // Don't do anything for N or E
+    return dd;
   }
 
-  async addData(image) {
+  async addData(file) {
     try {
-      let jimpImage = await Jimp.read(image.filepath);
+      file.image = {};
+      let jimpImage = await Jimp.read(file.filepath);
       await jimpImage.resize(this.imageResizer.width, this.imageResizer.height);
       await jimpImage.quality(this.imageResizer.quality);
       jimpImage = await jimpImage.getBase64Async(Jimp.AUTO);
       // set mini image
-      image.icon = jimpImage;
+      file.image.icon = jimpImage;
     } catch (error) {
-      console.log(error);
+      log(error);
     }
 
     try {
-      let exifImage = await this.getExifImage(image);
+      let exifImage = await this.getExifImage(file);
       // set more data
-      image.more = exif;
+      Object.assign(file.image, exifImage);
     } catch (error) {
-      console.log(error);
+      log(error);
     }
     
   }

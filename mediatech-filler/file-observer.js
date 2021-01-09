@@ -1,6 +1,7 @@
 const chokidar = require('chokidar');
 const EventEmitter = require('events').EventEmitter;
 const path = require('path');
+const { log } = require('./util')
 
 class FileObserver extends EventEmitter {
   constructor() {
@@ -9,16 +10,12 @@ class FileObserver extends EventEmitter {
 
   watchFolder(folder) {
     try {
-      console.log(
-        `[${new Date().toLocaleString()}] Watching for folder changes on: ${folder}`
-      );
+      log(`Watching for folder changes on: ${folder}`);
 
       var watcher = chokidar.watch(folder, { persistent: true });
 
       watcher.on('add', async filepath => {
-        console.log(
-          `[${new Date().toLocaleString()}] ${filepath} has been added.`
-        );
+        log(`${filepath} has been added.`);
 
         let {base,ext} = path.parse(filepath);
         
@@ -32,7 +29,7 @@ class FileObserver extends EventEmitter {
 
       });
     } catch (error) {
-      console.log(error);
+      log(error);
     }
   }
 }

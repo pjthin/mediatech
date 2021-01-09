@@ -1,4 +1,5 @@
 const { MongoClient } = require("mongodb");
+const { log } = require('./util');
 // Replace the uri string with your MongoDB deployment's connection string.
 const uri = "mongodb://localhost/mediatech";
 const mongoClient = new MongoClient(uri,{ useUnifiedTopology: true });
@@ -22,7 +23,7 @@ async function getCollection(collectionName) {
     }
     return collections[collectionName];
   } catch (error) {
-    console.log(error);
+    log(error);
     throw error;
   }
 }
@@ -32,9 +33,7 @@ async function save(collectionName, item, uniq = {_id:-1}) {
     let collection = await getCollection(collectionName);
     let alreadyExists = await collection.findOne(uniq,{_id:true});
     if (alreadyExists) {
-      console.log(
-        `[${new Date().toLocaleString()}] document already exists with id ${alreadyExists._id}.`
-      );
+      log(`document already exists with id ${alreadyExists._id}.`);
       return alreadyExists._id;
     }
     let result = await collection.insertOne(item);
@@ -49,7 +48,7 @@ async function countAll(collectionName) {
     let collection = await getCollection(collectionName);
     return await collection.countDocuments({});
   } catch (error) {
-    console.log(error);
+    log(error);
   }
 }
 
