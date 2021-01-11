@@ -10,10 +10,13 @@ let database = new Database(env.database);
 
 fo.on('file-added', async newFile => {
   imgProcessor.process(newFile);
-  let pkFile = {};
-  pkFile.filename = newFile.filename;
-  let file = await save('pictures', newFile, pkFile);
-  log(`${newFile.filename} saved ${file}.`);
+  try {
+    let fileId = await database.save(newFile);
+    log(`${newFile.filename} saved ${fileId}.`);	
+  } catch (error) {
+  	log(`an error occured when saving ${newFile.filename}.`);
+  }
+  
 });
 
 fo.watchFolder(env.app.folderToWatch);

@@ -20,6 +20,7 @@ class Database {
     if (file.image) {
       await this.insertImage(fileId, file.image);
     }
+    return fileId;
   }
 
   async insertFile(file) {
@@ -32,9 +33,9 @@ class Database {
 
   insert(sql, data) {
     return new Promise((resolve, reject) => {
-      pool.query(sql, data, (error, results, fields) => {
+      this.pool.query(sql, data, (error, results, fields) => {
         if (error) {
-          log(`Error SQL for ${sql} with ${data} : error`);
+          log(`Error SQL for ${sql} with ${data} : ${error}`);
           reject(error);
         } else {
           if (results.insertId) {
