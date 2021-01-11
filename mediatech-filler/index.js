@@ -1,10 +1,13 @@
+const { log } = require('./util');
 const FileObserver = require('./file-observer');
 const ImageProcessor = require('./image-processor');
-const { save, countAll } = require('./dao');
-const { log } = require('./util');
+const Database = require('./dao');
+const env = require('./environnement');
 
 let fo = new FileObserver();
 let imgProcessor = new ImageProcessor();
+let database = new Database(env.database);
+
 fo.on('file-added', async newFile => {
   imgProcessor.process(newFile);
   let pkFile = {};
@@ -12,7 +15,5 @@ fo.on('file-added', async newFile => {
   let file = await save('pictures', newFile, pkFile);
   log(`${newFile.filename} saved ${file}.`);
 });
-countAll('pictures').then(countPictures => {
-  log(`${countPictures} pictures saved.`)
-  fo.watchFolder('/home/Pierre-Jean.Thin/perso/test/in/');
-});
+
+fo.watchFolder(env.app.folderToWatch);
