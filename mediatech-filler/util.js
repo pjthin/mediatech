@@ -1,3 +1,5 @@
+const env = require('./environnement');
+
 function log(txt, ...obj) {
 	console.log(`[${new Date().toLocaleString()}] ${txt}`);
 	if (obj) {
@@ -5,4 +7,10 @@ function log(txt, ...obj) {
 	}
 }
 
-module.exports = { log };
+function debug(txt, ...obj) {
+	if (env.app.debug) {
+		log(txt, obj);
+	}
+}
+
+module.exports = { log, debug };

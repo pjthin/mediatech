@@ -1,6 +1,6 @@
 const Jimp = require('jimp');
 const { ExifImage } = require('exif');
-const { log } = require('./util');
+const { log, debug } = require('./util');
 const IMG_EXT = [
     '.bmp',
     '.gif',
@@ -74,9 +74,11 @@ class ImageProcessor {
   }
 
   async process(file) {
+    debug('start image-processor', file);
     if (IMG_EXT.includes(file.extension.toLowerCase())) {
       await this.addData(file);
     }
+    debug('end image-processor', file);
   }
 
 }
