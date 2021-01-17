@@ -28,6 +28,7 @@ class ImageProcessor {
   }
 
   extractOnly(exifData) {
+    debug('extractOnly exifData', exifData);
     let { image, thumbnail, gps } = exifData;
     return {
       pictureMake: image["Make"] || thumbnail["Make"],

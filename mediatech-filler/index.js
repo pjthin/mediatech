@@ -9,7 +9,7 @@ let imgProcessor = new ImageProcessor();
 let database = new Database(env.database);
 
 fo.on('file-added', async newFile => {
-  imgProcessor.process(newFile);
+  await imgProcessor.process(newFile);
   try {
     let fileId = await database.save(newFile);
     log(`${newFile.filename} saved ${fileId}.`);	
