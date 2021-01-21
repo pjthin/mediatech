@@ -21,7 +21,7 @@ class ImageProcessor {
 
   getExifImage(file) {
     return new Promise((resolve, reject) => {
-      new ExifImage(file.filepath, (error, exifData) => {
+      new ExifImage(file.path, (error, exifData) => {
         if (error) {
           reject(error);
         } else {
@@ -35,15 +35,15 @@ class ImageProcessor {
     debug('extractOnly exifData', exifData);
     let { image, thumbnail, gps } = exifData;
     return {
-      pictureMake: image["Make"] || thumbnail["Make"],
-      pictureModele: image["Model"] || thumbnail["Model"],
-      pictureDate: image["ModifyDate"] || thumbnail["ModifyDate"],
-      gpsLatitude: this.exifToCoordonate(gps["GPSLatitude"], gps["GPSLatitudeRef"]),
-      gpsLongitude: this.exifToCoordonate(gps["GPSLongitude"], gps["GPSLongitudeRef"]),
-      gpsAltitude: gps["GPSAltitude"],
-      gpsAltitudeRef: gps["GPSAltitudeRef"],
-      gpsSpeed: gps["GPSSpeed"],
-      gpsSpeedRef:gps["GPSSpeedRef"] 
+      picture_make: image["Make"] || thumbnail["Make"],
+      picture_model: image["Model"] || thumbnail["Model"],
+      picture_date: image["ModifyDate"] || thumbnail["ModifyDate"],
+      gps_latitude: this.exifToCoordonate(gps["GPSLatitude"], gps["GPSLatitudeRef"]),
+      gps_longitude: this.exifToCoordonate(gps["GPSLongitude"], gps["GPSLongitudeRef"]),
+      gps_altitude: gps["GPSAltitude"],
+      gps_altitude_ref: gps["GPSAltitudeRef"],
+      gps_speed: gps["GPSSpeed"],
+      gps_speed_ref:gps["GPSSpeedRef"] 
     };
   }
 
@@ -67,7 +67,7 @@ class ImageProcessor {
     if (IMG_EXT_JIMP.includes(file.extension.toLowerCase())) {
       try {
         file.image = {};
-        let jimpImage = await Jimp.read(file.filepath);
+        let jimpImage = await Jimp.read(file.path);
         await jimpImage.resize(this.imageResizer.width, this.imageResizer.height);
         await jimpImage.quality(this.imageResizer.quality);
         jimpImage = await jimpImage.getBase64Async(Jimp.AUTO);

@@ -7,7 +7,7 @@
     "password": "media"
   },
   "app": {
-    "folderToWatch": "/home/pi/test/pictures",
+    "folderToWatch": "/home/Pierre-Jean.Thin/perso/test/in",
     "debug": true
   }
 }

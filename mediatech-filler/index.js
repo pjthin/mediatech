@@ -12,9 +12,9 @@ fo.on('file-added', async newFile => {
   await imgProcessor.process(newFile);
   try {
     let fileId = await database.save(newFile);
-    log(`${newFile.filename} saved ${fileId}.`);	
+    log(`${newFile.name} saved ${fileId}.`);	
   } catch (error) {
-  	log(`an error occured when saving ${newFile.filename}.`);
+  	log(`an error occured when saving ${newFile.name}.`);
   }
   
 });

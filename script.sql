@@ -14,7 +14,7 @@ CREATE TABLE `mediadb`.`mypicture` (
   `picture_date` DATETIME NOT NULL,
   `picture_make` VARCHAR(150) NULL,
   `picture_model` VARCHAR(150) NULL,
-  `icon` BLOB NOT NULL,
+  `icon` MEDIUMTEXT NOT NULL,
   `gps_latitude` DECIMAL NULL,
   `gps_longitude` DECIMAL NULL,
   `gps_altitude` DECIMAL NULL,

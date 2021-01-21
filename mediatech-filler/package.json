@@ -14,6 +14,7 @@
     "mysql": "^2.18.1"
   },
   "scripts": {
+    "run-local": "node index.js env=local",
     "run-dev": "node index.js env=dev",
     "run-prd": "node index.js env=prd"
   }
