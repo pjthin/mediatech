@@ -39,6 +39,19 @@ class Database {
     return await this.insert('INSERT INTO mypicture SET ?', image);
   }
 
+  countFile() {
+    return new Promise((resolve, reject) => {
+      this.pool.query('SELECT COUNT(*) FROM myfile', (error, results, fields) => {
+        if (error) {
+          log(`Error SQL for ${sql} with ${data} : ${error}`);
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      }
+    );
+  }
+
   insert(sql, data) {
     return new Promise((resolve, reject) => {
       let query = this.pool.query(sql, data, (error, results, fields) => {

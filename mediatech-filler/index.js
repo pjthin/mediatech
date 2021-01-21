@@ -19,4 +19,5 @@ fo.on('file-added', async newFile => {
   
 });
 
-fo.watchFolder(env.app.folderToWatch);
+
+database.countFile().then((data) => { log(data); }).then(() => { fo.watchFolder(env.app.folderToWatch); }).catch((error) => { log(error); });
