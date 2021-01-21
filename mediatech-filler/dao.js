@@ -31,10 +31,12 @@ class Database {
   async insertFile(file) {
     delete file.extension;
     delete file.image;
+    debug('insertFile()');
     return await this.insert('INSERT INTO myfile SET ?', file);
   }
 
   async insertImage(fileId, image) {
+    debug(`insertImage(${fileId})`);
     image.fk_id_file = fileId;
     return await this.insert('INSERT INTO mypicture SET ?', image);
   }
@@ -48,8 +50,8 @@ class Database {
         } else {
           resolve(results);
         }
-      }
-    );
+      });
+    });
   }
 
   insert(sql, data) {

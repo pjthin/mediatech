@@ -20,4 +20,4 @@ fo.on('file-added', async newFile => {
 });
 
 
-database.countFile().then((data) => { log(data); }).then(() => { fo.watchFolder(env.app.folderToWatch); }).catch((error) => { log(error); });
+database.countFile().then((data) => { log('data: ', data); }).then(() => { fo.watchFolder(env.app.folderToWatch); }).catch((error) => { log(error); });
