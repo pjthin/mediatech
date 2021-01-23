@@ -9,12 +9,12 @@ let imgProcessor = new ImageProcessor();
 let database = new Database(env.database);
 
 fo.on('file-added', async newFile => {
-  await imgProcessor.process(newFile);
   try {
+  	await imgProcessor.process(newFile);
     let fileId = await database.save(newFile);
     debug(`${newFile.name} saved ${fileId}.`);	
   } catch (error) {
-  	log(`an error occured when saving ${newFile.name}.`);
+  	log(`an error occured when saving ${newFile.name}.`, error.stack || error);
   }
   
 });

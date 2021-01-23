@@ -20,13 +20,17 @@ class Database {
   }
 
   async save(file) {
-    let image = Object.assign({}, file.image);
-    file.type = file.image ? 'P' : 'F';
-    let fileId = await this.insertFile(file);
-    if (file.type === 'P') {
-      await this.insertImage(fileId, image);
+    try {
+      let image = Object.assign({}, file.image);
+      file.type = file.image ? 'P' : 'F';
+      let fileId = await this.insertFile(file);
+      if (file.type === 'P') {
+        await this.insertImage(fileId, image);
+      }
+      return fileId;
+    } catch (error) {
+      log(error.stack || error);
     }
-    return fileId;
   }
 
   async insertFile(file) {

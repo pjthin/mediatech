@@ -87,7 +87,7 @@ class ImageProcessor {
         log(error.stack || error);
       }  
     }
-    debug('end image-processor', file);
+    debug('end image-processor');
   }
 
 }
