@@ -4,13 +4,14 @@ const { log, debug } = require('./util');
 class Database {
   constructor(configuration) {
     this.pool = mysql.createPool(configuration);
-    this.pool.on('acquire', (conn) => { debug(`connection acquire ${conn.threadId}`); });
+    this.pool.on('acquire', (conn) => { debug(`connection acquired ${conn.threadId}`); });
     this.pool.on('connection', (conn) => { debug(`new connection ${conn.threadId}`); });
     this.pool.on('enqueue', () => { debug(`waiting for connection`); });
+    this.pool.on('release', (conn) => { debug(`connection released ${conn.threadId}`); });
     process.on('exit', async code => {
-      await this.pool.end(err => {
-        if (err) {
-          log(err);
+      await this.pool.end(error => {
+        if (error) {
+          log(error.stack || error);
         } else {
           log('connection ended.');
         }
@@ -45,7 +46,7 @@ class Database {
     return new Promise((resolve, reject) => {
       this.pool.query('SELECT COUNT(*) FROM myfile', (error, results, fields) => {
         if (error) {
-          log(`Error SQL for ${sql} with ${data} : ${error}`);
+          log(`Error SQL for ${sql} with ${data} : ${error.stack}`);
           reject(error);
         } else {
           resolve(results);
@@ -58,7 +59,7 @@ class Database {
     return new Promise((resolve, reject) => {
       let query = this.pool.query(sql, data, (error, results, fields) => {
         if (error) {
-          log(`Error SQL for ${sql} with ${data} : ${error}`);
+          log(`Error SQL for ${sql} with ${data} : ${error.stack}`);
           reject(error);
         } else {
           if (results.insertId) {

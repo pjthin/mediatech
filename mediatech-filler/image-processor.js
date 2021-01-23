@@ -74,7 +74,7 @@ class ImageProcessor {
         // set mini image
         file.image.icon = jimpImage;
       } catch (error) {
-        log(error);
+        log(error.stack || error);
       }
     }
     // exif only for jpeg image
@@ -84,7 +84,7 @@ class ImageProcessor {
         // set more data
         Object.assign(file.image, exifImage);
       } catch (error) {
-        log(error);
+        log(error.stack || error);
       }  
     }
     debug('end image-processor', file);

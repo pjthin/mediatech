@@ -12,9 +12,9 @@ class FileObserver extends EventEmitter {
     try {
       log(`Watching for folder changes on: ${folder}`);
 
-      let watcher = chokidar.watch(folder, { persistent: true });
+      let watcher = chokidar.watch(folder, { persistent: true, ignored: '*.*' });
 
-      watcher.on('add', async filepath => {
+      watcher.on('add', filepath => {
         debug(`${filepath} has been added.`);
 
         let {base,ext} = path.parse(filepath);
@@ -29,7 +29,7 @@ class FileObserver extends EventEmitter {
 
       });
     } catch (error) {
-      log(error);
+      log(error.stack || error);
     }
   }
 }

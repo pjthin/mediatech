@@ -12,7 +12,7 @@ fo.on('file-added', async newFile => {
   await imgProcessor.process(newFile);
   try {
     let fileId = await database.save(newFile);
-    log(`${newFile.name} saved ${fileId}.`);	
+    debug(`${newFile.name} saved ${fileId}.`);	
   } catch (error) {
   	log(`an error occured when saving ${newFile.name}.`);
   }
@@ -20,4 +20,7 @@ fo.on('file-added', async newFile => {
 });
 
 
-database.countFile().then((data) => { log('data: ', data); }).then(() => { fo.watchFolder(env.app.folderToWatch); }).catch((error) => { log(error); });
+database.countFile()
+  .then((data) => { log('Number of file in database: ', data); })
+  .then(() => { fo.watchFolder(env.app.folderToWatch); })
+  .catch((error) => { log(error.stack || error); });
