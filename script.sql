@@ -19,8 +19,6 @@ CREATE TABLE `mediadb`.`mypicture` (
   `gps_longitude` DECIMAL NULL,
   `gps_altitude` DECIMAL NULL,
   `gps_altitude_ref` DECIMAL NULL,
-  `gps_speed_ref` VARCHAR(1) NULL,
-  `gps_speed` DECIMAL NULL,
   UNIQUE INDEX `fk_id_file_UNIQUE` (`fk_id_file` ASC),
   INDEX `index_picture_date` (`picture_date` ASC),
   CONSTRAINT `fk_mypicture_1`
