@@ -25,7 +25,7 @@ class Database {
   async loadCache() {
     if (this.filesAreadyLoaded.size === 0) {
       debug('loading cache');
-      let results = await selectAsync('SELECT path FROM myfile', []);
+      let results = await this.selectAsync('SELECT path FROM myfile', []);
       results.forEach( row => this.filesAreadyLoaded.add(row.path) );
       debug(`cache loaded ${this.filesAreadyLoaded.size} values`);
     }
@@ -55,7 +55,7 @@ class Database {
   }
 
   countFileAsync() {
-    return selectAsync('SELECT COUNT(*) FROM myfile',[]);
+    return this.selectAsync('SELECT COUNT(*) FROM myfile',[]);
   }
 
   selectAsync(sql, data) {
