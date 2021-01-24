@@ -1,6 +1,6 @@
 const Jimp = require('jimp');
 const exifr = require('exifr');
-const { log, debug } = require('./util');
+const { error, log, debug } = require('./util');
 const IMG_EXT_JIMP = [
     '.bmp',
     '.gif',
@@ -60,7 +60,7 @@ const makeIconAsync = async function(file) {
       // set mini image
       file.image.icon = jimpImage;
     } catch (error) {
-      log(error.stack || error);
+      error(error.stack || error);
     }
   }
 }
@@ -72,7 +72,7 @@ const extractExifAsync = async (file) => {
       // set more data
       Object.assign(file.image, exifImage);
     } catch (error) {
-      log(error.stack || error);
+      error(error.stack || error);
     }  
   }
 }

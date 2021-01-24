@@ -13,4 +13,11 @@ function debug(txt, ...obj) {
   }
 }
 
-module.exports = { log, debug };
+function error(txt, ...obj) {
+  console.error(`[${new Date().toLocaleString()}] ${txt}`);
+  if (obj) {
+    obj.forEach(d => console.error(JSON.stringify(d)));
+  }
+}
+
+module.exports = { error, log, debug };
