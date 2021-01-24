@@ -1,0 +1,9 @@
+{
+    "apps": [
+        {
+            "name": "mediatech-filler",
+            "script": "node src/index.js",
+            "args" : "env=prd"
+        }
+    ]
+}
