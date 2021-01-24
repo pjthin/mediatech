@@ -4,6 +4,8 @@ const ImageProcessor = require('./image-processor');
 const Database = require('./dao');
 const env = require('./environnement');
 
+log('start with environnement: ', env);
+
 let fo = new FileObserver();
 let imgProcessor = new ImageProcessor();
 let database = new Database(env.database);

@@ -3,7 +3,11 @@
         {
             "name": "mediatech-filler",
             "script": "node src/index.js",
-            "args" : "env=prd"
+            "watch":true,
+            "ignore_watch" : ["node_modules"],
+            "env": {
+                "NODE_ENV":"prd"
+            }
         }
     ]
 }
