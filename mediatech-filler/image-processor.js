@@ -1,5 +1,5 @@
 const Jimp = require('jimp');
-const { ExifImage } = require('exif');
+const exifr = require('exifr');
 const { log, debug } = require('./util');
 const IMG_EXT_JIMP = [
     '.bmp',
@@ -13,22 +13,18 @@ const IMG_EXT_EXIF = [
     '.jpeg',
     '.jpg'
 ];
+const EXIFR_OPTS = {
+  idf0: false,
+  exif: true
+};
 
 class ImageProcessor {
   constructor(configuration = {imageResizer: {width:400, height: Jimp.AUTO, quality: 90}}) {
     this.imageResizer = configuration.imageResizer;
   }
 
-  getExifImage(file) {
-    return new Promise((resolve, reject) => {
-      new ExifImage(file.path, (error, exifData) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(this.extractOnly(exifData));
-        }
-      });
-    });
+  async getExifImage(file) {
+    return this.extractOnly(await exifr.parse(file.path));
   }
 
   extractOnly(exifData) {

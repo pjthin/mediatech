@@ -8,7 +8,7 @@
   "dependencies": {
     "chokidar": "^3.4.3",
     "events": "^3.2.0",
-    "exif": "^0.6.0",
+    "exifr": "^6.0.0",
     "jimp": "^0.16.1",
     "mongodb": "^3.6.3",
     "mysql": "^2.18.1"
