@@ -19,10 +19,7 @@ fo.on('file-added', async newFile => {
   
 });
 
-fo.watchFolder(env.app.folderToWatch);
-/*
 database.countFileAsync()
   .then((data) => { log('Number of file in database: ', data); })
   .then(() => { fo.watchFolder(env.app.folderToWatch); })
   .catch((error) => { log(error.stack || error); });
-*/
