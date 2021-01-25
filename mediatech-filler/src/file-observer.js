@@ -1,7 +1,7 @@
 const chokidar = require('chokidar');
 const EventEmitter = require('events').EventEmitter;
 const path = require('path');
-const { error, log, debug } = require('./util')
+const { logerror, log, debug } = require('./util')
 
 class FileObserver extends EventEmitter {
   constructor() {
@@ -29,7 +29,7 @@ class FileObserver extends EventEmitter {
 
       });
     } catch (error) {
-      error(error.stack || error);
+      logerror(error.stack || error);
     }
   }
 }

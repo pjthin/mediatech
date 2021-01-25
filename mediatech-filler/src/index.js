@@ -1,4 +1,4 @@
-const { error, log, debug } = require('./util');
+const { logerror, log, debug } = require('./util');
 const FileObserver = require('./file-observer');
 const ImageProcessor = require('./image-processor');
 const Database = require('./dao');
@@ -16,7 +16,7 @@ fo.on('file-added', async newFile => {
     let fileId = await database.saveFileAsync(newFile);
     debug(`${newFile.name} saved ${fileId}.`);	
   } catch (error) {
-  	error(`an error occured when saving ${newFile.name}.`, error.stack || error);
+  	logerror(`an error occured when saving ${newFile.name}.`, error.stack || error);
   }
   
 });
@@ -24,4 +24,4 @@ fo.on('file-added', async newFile => {
 database.countFileAsync()
   .then((data) => { log('Number of file in database: ', data); })
   .then(() => { fo.watchFolder(env.app.folderToWatch); })
-  .catch((error) => { error(error.stack || error); });
+  .catch((error) => { logerror(error.stack || error); });

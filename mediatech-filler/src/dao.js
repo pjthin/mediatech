@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const { error, log, debug } = require('./util');
+const { logerror, log, debug } = require('./util');
 
 class Database {
   constructor(configuration) {
@@ -12,7 +12,7 @@ class Database {
     let close = async code => {
       await this.pool.end(error => {
         if (error) {
-          error(error.stack || error);
+          logerror(error.stack || error);
         } else {
           log('connection ended.');
         }
@@ -50,7 +50,7 @@ class Database {
       }
       return fileId;
     } catch (error) {
-      error(error.stack || error);
+      logerror(error.stack || error);
     }
   }
 
@@ -62,7 +62,7 @@ class Database {
     return new Promise((resolve, reject) => {
       this.pool.query(sql, data, (error, results, fields) => {
         if (error) {
-          error(`Error SQL for ${sql} : ${error.stack}`);
+          logerror(`Error SQL for ${sql} : ${error.stack}`);
           reject(error);
         } else {
           resolve(results);
@@ -75,7 +75,7 @@ class Database {
     return new Promise((resolve, reject) => {
       let query = this.pool.query(sql, data, (error, results, fields) => {
         if (error) {
-          error(`Error SQL for ${sql} with ${data} : ${error.stack}`);
+          logerror(`Error SQL for ${sql} with ${data} : ${error.stack}`);
           reject(error);
         } else {
           if (results.insertId) {
