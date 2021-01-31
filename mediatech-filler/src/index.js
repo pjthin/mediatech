@@ -3,23 +3,29 @@ const FileObserver = require('./file-observer');
 const ImageProcessor = require('./image-processor');
 const Database = require('./dao');
 const env = require('./environnement');
+const { BR, W } = require('./mystream');
 
 log('start with environnement: ', env);
 
 let fo = new FileObserver();
 let imgProcessor = new ImageProcessor();
 let database = new Database(env.database);
-
-fo.on('file-added', async newFile => {
-  try {
-  	await imgProcessor.processAsync(newFile);
-    let fileId = await database.saveFileAsync(newFile);
-    debug(`${newFile.name} saved ${fileId}.`);	
-  } catch (error) {
-  	logerror(`an error occured when saving ${newFile.name}.`, error.stack || error);
+let br = new BR();
+let w = new W({
+  doIt: async newFile => {
+    try {
+      await imgProcessor.processAsync(newFile);
+      let fileId = await database.saveFileAsync(newFile);
+      debug(`${newFile.name} saved ${fileId}.`);  
+    } catch (error) {
+      logerror(`an error occured when saving ${newFile.name}.`, error.stack || error);
+    }
+    
   }
-  
 });
+br.pipe(w);
+
+fo.on('file-added', newFile => br.pushBuffer(newFile));
 
 database.countFileAsync()
   .then((data) => { log('Number of file in database: ', data); })
