@@ -11,12 +11,16 @@ class BR extends Readable {
   }
 
   _read() {
-    console.log('read call');
-    this.push(this.buff.shift());
+    let data = this.buff.shift();
+    if (data) {
+      this.push(data);
+    } else {
+      // rien à faire
+    }
   }
 }
 class W extends Writable {
-  constructor({parallele=5, doIt}) {
+  constructor({parallele=15, doIt}) {
     super({objectMode: true});
     this.parallele = parallele;
     this.doIt = doIt;
