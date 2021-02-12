@@ -31,10 +31,14 @@ class Database {
     }
   }
 
+  async isFileAlreadyInserted(file) {
+    await this.loadCache();
+    return this.filesAreadyLoaded.has(file.path);
+  }
+
   async saveFileAsync(file) {
     try {
-      await this.loadCache();
-      if (this.filesAreadyLoaded.has(file.path)) {
+      if (await this.isFileAlreadyInserted(file)) {
         return;
       }
       let image = Object.assign({}, file.image);

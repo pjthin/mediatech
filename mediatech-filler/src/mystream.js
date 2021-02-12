@@ -1,16 +1,20 @@
 const { Readable, Writable } = require('stream');
-const { sleep } = require('./util');
+const { sleep, debug } = require('./util');
 
 class BR extends Readable {
   constructor() {
     super({objectMode: true});
     this.buff = [];
     this.run = true;
+    this.refreshId = setInterval(() => {
+      debug(`BufferSize = ${this.buff.length}`);
+    }, 5000);
     let close = code => {
       this.buff = [];
       this.run = false;
       // fin du stream
       this.push(null);
+      clearInterval(this.refreshId);
     };
     process.on('SIGINT', close);
     process.on('exit', close);
@@ -33,14 +37,11 @@ class BR extends Readable {
       this.push(data);
     } else {
       // attend de pouvoir lire quelque chose
-      do {
-        await sleep(1000);
-        data = this.buff.shift();
-        if (data) {
-          this.push(data);
-          return;
-        }
-      } while (typeof data === 'undefined' || !this.run)
+      while ((data = this.buff.shift()) == undefined && this.run) {
+        await sleep(500);
+        debug('sleep');
+      }
+      this.push(data);
     }
   }
 }

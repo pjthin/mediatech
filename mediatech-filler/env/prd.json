@@ -8,6 +8,6 @@
   },
   "app": {
     "folderToWatch": "/home/pi/Syncthing/",
-    "debug": false
+    "debug": true
   }
 }

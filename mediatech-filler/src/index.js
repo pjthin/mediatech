@@ -14,6 +14,10 @@ let br = new BR();
 let w = new W({
   doIt: async newFile => {
     try {
+      if (await database.isFileAlreadyInserted(newFile)) {
+        // stop avant de faire des calculs
+        return;
+      }
       await imgProcessor.processAsync(newFile);
       let fileId = await database.saveFileAsync(newFile);
       debug(`${newFile.name} saved ${fileId}.`);  

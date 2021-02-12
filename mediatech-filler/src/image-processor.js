@@ -53,10 +53,15 @@ const makeIconAsync = async function(file) {
   if (IMG_EXT_JIMP.includes(file.extension.toLowerCase())) {
     try {
       file.image = {};
+      debug(`jimp start ${file.path}`);
       let jimpImage = await Jimp.read(file.path);
+      debug(`jimp read ${file.path}`);
       await jimpImage.resize(this.imageResizer.width, this.imageResizer.height);
+      debug(`jimp resize ${file.path}`);
       await jimpImage.quality(this.imageResizer.quality);
+      debug(`jimp quality ${file.path}`);
       jimpImage = await jimpImage.getBase64Async(Jimp.AUTO);
+      debug(`jimp toBase64 ${file.path}`);
       // set mini image
       file.image.icon = jimpImage;
     } catch (error) {
