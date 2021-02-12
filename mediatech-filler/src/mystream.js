@@ -1,21 +1,45 @@
 const { Readable, Writable } = require('stream');
+const { sleep } = require('./util');
 
 class BR extends Readable {
   constructor() {
     super({objectMode: true});
     this.buff = [];
+    this.run = true;
+    let close = code => {
+      this.buff = [];
+      this.run = false;
+      // fin du stream
+      this.push(null);
+    };
+    process.on('SIGINT', close);
+    process.on('exit', close);
   }
 
   pushBuffer(data) {
-    this.buff.push(data);
+    if (run) {
+      this.buff.push(data); 
+    }
   }
 
   _read() {
+    if (!run) {
+      // fin du stream
+      this.push(null);
+      return;
+    }
     let data = this.buff.shift();
     if (data) {
       this.push(data);
     } else {
-      // rien à faire
+      // attend de pouvoir lire quelque chose
+      do {
+        sleep(1000);
+        data = this.buff.shift();
+        if (data) {
+          this.push(data);
+        }
+      } while (!data || !run)
     }
   }
 }

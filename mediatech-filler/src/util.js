@@ -20,4 +20,10 @@ function logerror(txt, ...obj) {
   }
 }
 
-module.exports = { logerror, log, debug };
+function sleep(time) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => { resolve(); }, time);
+  });
+}
+
+module.exports = { logerror, log, debug, sleep };
