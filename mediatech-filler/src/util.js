@@ -9,7 +9,10 @@ function log(txt, ...obj) {
 
 function debug(txt, ...obj) {
   if (env.app.debug) {
-    log(txt, obj);
+    console.log(`[${new Date().toLocaleString()}] ${txt}`);
+    if (obj) {
+      obj.forEach(d => console.log(JSON.stringify(d)));
+    }
   }
 }
 
