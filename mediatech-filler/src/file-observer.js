@@ -12,7 +12,6 @@ class FileObserver extends EventEmitter {
     process.on('SIGINT', close);
     process.on('exit', close);
   }
-  }
 
   watchFolder(folder) {
     try {
