@@ -22,7 +22,7 @@ class BR extends Readable {
     }
   }
 
-  _read() {
+  async _read() {
     if (!this.run) {
       // fin du stream
       this.push(null);
@@ -34,12 +34,13 @@ class BR extends Readable {
     } else {
       // attend de pouvoir lire quelque chose
       do {
-        sleep(1000);
+        await sleep(1000);
         data = this.buff.shift();
         if (data) {
           this.push(data);
+          return;
         }
-      } while (!data || !this.run)
+      } while (typeof data === 'undefined' || !this.run)
     }
   }
 }
