@@ -45,12 +45,14 @@ class Database {
       file.type = file.image ? 'P' : 'F';
       delete file.extension;
       delete file.image;
-      debug('insertFile()');
+      debug(`insertFile(${file.path})`);
       let fileId = await this.insertAsync('INSERT INTO myfile SET ?', file);
+      debug(`insertFile(${file.path}) = ${fileId} DONE`);
       if (file.type === 'P') {
-        debug(`insertImage(${fileId})`);
+        debug(`insertImage(${file.path}, ${fileId})`);
         image.fk_id_file = fileId;
         await this.insertAsync('INSERT INTO mypicture SET ?', image);
+        debug(`insertImage(${file.path}, ${fileId}) DONE`);
       }
       return fileId;
     } catch (error) {
