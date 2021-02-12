@@ -6,6 +6,12 @@ const { logerror, log, debug } = require('./util')
 class FileObserver extends EventEmitter {
   constructor() {
     super();
+    let close = async code => {
+      await chokidar.close();
+    };
+    process.on('SIGINT', close);
+    process.on('exit', close);
+  }
   }
 
   watchFolder(folder) {

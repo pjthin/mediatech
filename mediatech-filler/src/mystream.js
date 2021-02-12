@@ -17,13 +17,13 @@ class BR extends Readable {
   }
 
   pushBuffer(data) {
-    if (run) {
+    if (this.run) {
       this.buff.push(data); 
     }
   }
 
   _read() {
-    if (!run) {
+    if (!this.run) {
       // fin du stream
       this.push(null);
       return;
@@ -39,7 +39,7 @@ class BR extends Readable {
         if (data) {
           this.push(data);
         }
-      } while (!data || !run)
+      } while (!data || !this.run)
     }
   }
 }
