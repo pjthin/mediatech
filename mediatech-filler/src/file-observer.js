@@ -1,7 +1,12 @@
 const chokidar = require('chokidar');
 const EventEmitter = require('events').EventEmitter;
 const path = require('path');
-const { logerror, log, debug } = require('./util')
+const { logerror, log, debug } = require('./util');
+
+const NOT_TO_TREATE = [
+    '.tmp',
+    '.temp'
+];
 
 class FileObserver extends EventEmitter {
   constructor() {
@@ -24,6 +29,10 @@ class FileObserver extends EventEmitter {
         debug(`${filepath} has been added.`);
 
         let {base,ext} = path.parse(filepath);
+
+        if (NOT_TO_TREATE.includes(ext.toLowerCase())) {
+          return;
+        }
         
         // emit an event when new file has been added
         this.emit('file-added', {
